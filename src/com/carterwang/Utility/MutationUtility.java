@@ -24,17 +24,17 @@ public class MutationUtility {
             if(r <= Params.MutationRate) {
                 //System.out.println(i.getIndex());
                 StringBuilder str = new StringBuilder(i.getChromosome());
-                String rep;
+                char c;
                 selected = RandomUtility.indexOfChromosome();
                 if(RandomUtility.isHeadGene(selected) && Math.random() < 0.5) {
                     //如果选中的是基因头部并且选中的是函数集
-                    rep = "" + Params.F[RandomUtility.indexOfFunction()];
+                    c = Params.F[RandomUtility.indexOfFunction()];
                 } else {
                     //如果选中的是基因头部并且选中的是终点集
                     //或者选中的是基因尾部
-                    rep = "" + Params.T[RandomUtility.indexOfTerminal()];
+                    c = Params.T[RandomUtility.indexOfTerminal()];
                 }
-                str.replace(selected,selected+1,rep);
+                str.setCharAt(selected, c);
                 //System.out.println("before " + i.getChromosome());
                 i.setChromosome(str.toString());
                 //System.out.println("after  " + i.getChromosome());

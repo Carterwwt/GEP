@@ -2,6 +2,8 @@ package com.carterwang.Utility;
 
 import com.carterwang.Data.Params;
 import com.carterwang.Population.Individual;
+import com.carterwang.Population.Population;
+import com.carterwang.Repo.PopulationRepo;
 
 
 /**
@@ -17,19 +19,23 @@ public class RecombinationUtility {
      * 3.基因重组
      */
     public static void performRecombination() {
-        if(Math.random() <= Params.Onepoint_Recombination_Rate) {
-            performOnePoint();
+        Population population = PopulationRepo.getPopulation();
+        for(Individual ind : population.getAllIndividuals()) {
+            if(Math.random() <= Params.Onepoint_Recombination_Rate) {
+                performOnePoint(ind);
+            }
+            if(Math.random() <= Params.Towpoint_Recombination_Rate) {
+                performTowPoint(ind);
+            }
+            if(Math.random() <= Params.Gene_Recombination_Rate) {
+                performGene(ind);
+            }
         }
-        if(Math.random() <= Params.Towpoint_Recombination_Rate) {
-            performTowPoint();
-        }
-        if(Math.random() <= Params.Gene_Recombination_Rate) {
-            performGene();
-        }
+
     }
 
-    private static void performOnePoint() {
-        Individual ind1 = RandomUtility.randomIndividual();
+    private static void performOnePoint(Individual ind) {
+        Individual ind1 = ind;
         Individual ind2 = RandomUtility.randomIndividual();
         StringBuilder buffer1 = new StringBuilder(ind1.getChromosome());
         StringBuilder buffer2 = new StringBuilder(ind2.getChromosome());
@@ -42,8 +48,8 @@ public class RecombinationUtility {
         ind2.setChromosome(buffer2.toString());
     }
 
-    private static void performTowPoint() {
-        Individual ind1 = RandomUtility.randomIndividual();
+    private static void performTowPoint(Individual ind) {
+        Individual ind1 = ind;
         Individual ind2 = RandomUtility.randomIndividual();
         int point1 = RandomUtility.indexOfChromosome();
         int point2 = RandomUtility.indexOfChromosome();
@@ -61,8 +67,8 @@ public class RecombinationUtility {
         ind2.setChromosome(buffer2.toString());
     }
 
-    private static void performGene() {
-        Individual ind1 = RandomUtility.randomIndividual();
+    private static void performGene(Individual ind) {
+        Individual ind1 = ind;
         Individual ind2 = RandomUtility.randomIndividual();
         int gene = RandomUtility.indexOfGenes();
         int geneStart = gene * Params.GeneLength;

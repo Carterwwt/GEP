@@ -8,7 +8,7 @@ import java.util.Stack;
  * 传入算数表达式，将返回一个浮点值结果
  * 如果计算过程错误，将返回0
  */
-public class Calculator {
+public class Polish {
     private Stack<String> postfixStack = new Stack<String>();
     // 后缀式栈
     private Stack<Character> opStack = new Stack<Character>();
@@ -17,7 +17,7 @@ public class Calculator {
     // 运用运算符ASCII码-40做索引的运算符优先级
     public static double conversion(String expression) {
         double result = 0;
-        Calculator cal = new Calculator();
+        Polish cal = new Polish();
         try {
             expression = transform(expression);
             result = cal.calculate(expression);

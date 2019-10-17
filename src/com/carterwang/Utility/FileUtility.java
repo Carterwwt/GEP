@@ -16,7 +16,7 @@ public class FileUtility {
     private FileUtility() {}
 
     public static void readData() {
-        File file = new File("src/data1.txt");
+        File file = new File("src/data2.txt");
         ArrayList<DataRow> dataRows = new ArrayList<>();
         try {
             FileReader in = new FileReader(file);

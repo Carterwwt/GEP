@@ -24,7 +24,7 @@ public class EvolutionController {
         boolean turnOnMutation = true;
         boolean turnOnRecombination = true;
         boolean turnOnTransposition = true;
-        boolean onlyShowBest = false;
+        boolean onlyShowBest = true;
         while(true) {
             //计算适应度
             FitnessUtility.calculateFitness();
@@ -38,6 +38,10 @@ public class EvolutionController {
 
             //判断是否产生最优个体
             if(FitnessUtility.reachMaximum())
+                break;
+
+            //判断是否到达进化代数上限
+            if(generation + 1 == Params.NumberOfGenerations)
                 break;
 
             //遗传选择
@@ -58,9 +62,6 @@ public class EvolutionController {
                 TranspositionUtility.performTransposition();
             }
 
-            //判断是否到达进化代数上限
-            if(generation + 1 == Params.NumberOfGenerations)
-                break;
             generation++;
         }
         //打印最佳个体

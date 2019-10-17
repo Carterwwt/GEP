@@ -1,5 +1,6 @@
 package com.carterwang.Utility;
 
+import com.carterwang.Calculator.GRCM;
 import com.carterwang.Data.DataRow;
 import com.carterwang.Data.Params;
 import com.carterwang.Data.SampleData;
@@ -7,7 +8,7 @@ import com.carterwang.Population.Individual;
 import com.carterwang.Population.Population;
 import com.carterwang.Repo.PopulationRepo;
 import com.carterwang.Repo.SampleDataRepo;
-import com.carterwang.Calculator.Calculator;
+import com.carterwang.Calculator.Polish;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class FitnessUtility {
      * 2.将中缀表达式传入Calculator中进行计算
      */
     public static void calculateFitness() {
-        generateInfixString();
+        //generateInfixString();
         compute();
     }
 
@@ -71,18 +72,16 @@ public class FitnessUtility {
     private static void compute() {
         Population population = PopulationRepo.getPopulation();
         SampleData data = SampleDataRepo.getSampleData();
-        double T = 0;
+        double T;
         double fitness;
-        String infix = "";
+        int beginIndex;
         for(Individual in : population.getAllIndividuals()) {
             fitness = 0;
             for(DataRow row : data.getDataRows()) {
                 T = 0;
-                for (String str : in.getGenesInfixString()) {
-                    for (int i = 0; i < row.getTerminal().length; i++) {
-                        infix = str.replaceAll(String.format("%c", i + 'a'), String.valueOf(row.getTerminal()[i]));
-                    }
-                    T += Calculator.conversion(infix);
+                for (int i=0;i<Params.NumberOfGenes;i++) {
+                    beginIndex = i * Params.GeneLength;
+                    T += GRCM.compute(in.getChromosome().substring(beginIndex, beginIndex + Params.GeneLength), row);
                 }
                 fitness = fitness + (Params.SelectionRange - Math.abs(row.getValue() - T));
             }
@@ -144,15 +143,11 @@ class BiTree {
      */
     private static BiTree generateBiTree(String str, int index) {
         char cur = str.charAt(index - 1);
-        if(isTerminal(cur)) {
+        if(SelectionUtility.isTerminal(cur)) {
             return new BiTree(cur,null,null);
         } else {
             return new BiTree(cur,generateBiTree(str, index * 2),generateBiTree(str,index * 2 + 1));
         }
-    }
-
-    private static boolean isTerminal(char c) {
-        return (c >= 'a' && c<= 'z');
     }
 
     /**

@@ -56,7 +56,7 @@ public class RandomUtility {
      * @return 随机生成的IS元素长度
      */
     public static int randomLengthOfIS() {
-        return (int)(Math.random() * Params.IS_Elements_Length);
+        return (int)(Math.random() * (Params.IS_Elements_Length) + 1);
     }
 
     /**
@@ -64,7 +64,7 @@ public class RandomUtility {
      * @return 随机生成的RIS元素长度
      */
     public static int randomLengthOfRIS() {
-        return (int)(Math.random() * Params.RIS_Elements_Length);
+        return (int)(Math.random() * (Params.RIS_Elements_Length) + 1);
     }
 
     /**
@@ -75,5 +75,12 @@ public class RandomUtility {
     public static boolean isHeadGene(int index) {
         return (index % Params.GeneLength) < Params.HeadLength;
     }
+
+    /**
+     *
+     * @param index 元素下标
+     * @return 返回是否处在基因的第一位，主要用于避免根转座
+     */
+    public static boolean isFirstInGene(int index) { return (index % Params.GeneLength) == 0;}
 
 }

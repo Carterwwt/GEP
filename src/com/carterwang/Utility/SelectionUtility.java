@@ -1,5 +1,6 @@
 package com.carterwang.Utility;
 
+import com.carterwang.Data.Params;
 import com.carterwang.Population.Individual;
 import com.carterwang.Population.Population;
 import com.carterwang.Repo.PopulationRepo;
@@ -78,6 +79,28 @@ public class SelectionUtility {
             }
         }
         return -1;
+    }
+
+    public static boolean isTerminal(char c) {
+        boolean isTerminal = true;
+        for(int i=0;i< Params.F.length;i++) {
+            if (c == Params.F[i]) {
+                isTerminal = false;
+                break;
+            }
+        }
+        return isTerminal;
+    }
+
+    public static boolean isTerminal(String s) {
+        boolean isTerminal = true;
+        for(int i=0;i< Params.F.length;i++) {
+            if (s.equals("" + Params.F[i])) {
+                isTerminal = false;
+                break;
+            }
+        }
+        return isTerminal;
     }
 
 }
