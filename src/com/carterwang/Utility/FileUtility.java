@@ -16,7 +16,7 @@ public class FileUtility {
     private FileUtility() {}
 
     public static void readData() {
-        File file = new File("src/data2.txt");
+        File file = new File(Params.src);
         ArrayList<DataRow> dataRows = new ArrayList<>();
         try {
             FileReader in = new FileReader(file);
@@ -24,7 +24,7 @@ public class FileUtility {
             String line;
             while((line = reader.readLine()) != null) {
                 String[] res = line.split(",");
-                double[] terminal = new double[Params.T.length];
+                double[] terminal = new double[res.length - 1];
                 for(int i=0;i<res.length - 1;i++) {
                     terminal[i] = Double.parseDouble(res[i]);
                 }
@@ -34,6 +34,8 @@ public class FileUtility {
             e.printStackTrace();
         }
         Params.NumberOfCases = dataRows.size();
+        Params.T_Size = dataRows.get(0).getTerminal().length;
+        Params.T = Params.getT();
         SampleDataRepo.setSampleData(new SampleData(dataRows));
     }
 }

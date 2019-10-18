@@ -75,6 +75,8 @@ public class FitnessUtility {
         double T;
         double fitness;
         int beginIndex;
+        //重置最大适应度个体
+        PopulationRepo.getBest().setFitness(0);
         for(Individual in : population.getAllIndividuals()) {
             fitness = 0;
             for(DataRow row : data.getDataRows()) {
@@ -89,6 +91,10 @@ public class FitnessUtility {
                 in.setFitness(fitness);
             else
                 in.setFitness(0);
+            //更新最大适应度个体
+            if(fitness > PopulationRepo.getBest().getFitness()) {
+                PopulationRepo.setBest(in);
+            }
         }
     }
 }

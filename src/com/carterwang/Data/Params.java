@@ -5,11 +5,14 @@ import java.util.Map;
 
 public class Params {
 
+    //文件路径
+    public static String src = "src/data2.txt";
+
     //选择范围
     public static double SelectionRange = 1000;
 
     //精度
-    public static double Precision = 1100;
+    public static double Precision = 0;
 
     //函数集
     public static char[] F = {'+','-','*','/'};
@@ -23,13 +26,13 @@ public class Params {
     }};
 
     //终点集参数个数
-    static int T_Size = 10;
+    public static int T_Size = 0;
 
     //终点集
     public static char[] T;
 
     //进化代数
-    public static int NumberOfGenerations = 8000;
+    public static int NumberOfGenerations = 5000;
 
     //种群大小
     public static int PopulationSize = 100;
@@ -53,7 +56,7 @@ public class Params {
     public static int ChromosomeLength = NumberOfGenes * GeneLength;
 
     //变异率
-    public static double MutationRate = 0.3;
+    public static double MutationRate = 0.1;
 
     //单点重组概率
     public static double Onepoint_Recombination_Rate = 0.4;

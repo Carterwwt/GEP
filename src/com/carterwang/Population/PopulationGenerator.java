@@ -1,6 +1,7 @@
 package com.carterwang.Population;
 
 import com.carterwang.Data.Params;
+import com.carterwang.Repo.PopulationRepo;
 import com.carterwang.Utility.RandomUtility;
 
 import java.util.ArrayList;
@@ -34,12 +35,14 @@ public class PopulationGenerator {
      * 生成初代种群
      * @return 一个String类型的ArrayList,包含种群的所有个体
      */
-    public Population generatePopulation() {
+    public void generatePopulation() {
         ArrayList<Individual> individuals = new ArrayList<>();
         for(int i=0;i<populationSize;i++) {
             individuals.add(new Individual(generateIndividual(),i));
         }
-        return new Population(individuals);
+        Population population = new Population(individuals);
+        PopulationRepo.setPopulation(population);
+        PopulationRepo.setBest(population.getAllIndividuals().get(0));
     }
 
     /**

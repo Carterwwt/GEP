@@ -18,16 +18,7 @@ public class SelectionUtility {
      * @return 返回最佳个体
      */
     public static Individual selectBestIndividual() {
-        double max = 0;
-        int index = 0;
-        ArrayList<Individual> allIndividuals = PopulationRepo.getPopulation().getAllIndividuals();
-        for(Individual i : allIndividuals) {
-            if(i.getFitness() > max) {
-                index = allIndividuals.indexOf(i);
-                max = i.getFitness();
-            }
-        }
-        return allIndividuals.get(index);
+        return PopulationRepo.getBest();
     }
 
     /**
@@ -49,9 +40,15 @@ public class SelectionUtility {
             possibility[i] = (former + in.getFitness()) / sumFitness;
             former += in.getFitness();
         }
-        //轮盘赌
         ArrayList<Individual> individuals = new ArrayList<>();
-        for(int i=0;i<population.getPopulationSize();i++) {
+        //精英策略
+        int eliteNum = 3;
+        Individual best = SelectionUtility.selectBestIndividual();
+        for(int i=0;i<eliteNum;i++) {
+            individuals.add(best);
+        }
+        //轮盘赌
+        for(int i=0;i<population.getPopulationSize() - eliteNum;i++) {
             double r = Math.random();
             int index = selectedIndex(possibility, r);
             Individual in = new Individual(population.getAllIndividuals().get(index));

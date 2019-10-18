@@ -12,9 +12,13 @@ public class EvolutionController {
     private int generation = 0;
 
     public EvolutionController() {
-        Params.T = Params.getT();
-        PopulationRepo.setPopulation(new PopulationGenerator().generatePopulation());
+        //读入数据
         FileUtility.readData();
+        //随机产生初始种群
+        new PopulationGenerator().generatePopulation();
+        //打印初始种群信息，准备开始进化
+        System.out.println(PopulationRepo.getPopulation());
+        System.out.println("First Generation created!");
     }
 
     /**
@@ -25,6 +29,21 @@ public class EvolutionController {
         boolean turnOnRecombination = true;
         boolean turnOnTransposition = true;
         boolean onlyShowBest = true;
+
+        //准备开始进化
+        for(int i=0;i<10;i++)
+            System.out.println();
+        System.out.println("Evolution begins in...");
+        for(int i=3;i>0;i--) {
+            System.out.printf("%d...\n",i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //开始进化
         while(true) {
             //计算适应度
             FitnessUtility.calculateFitness();
