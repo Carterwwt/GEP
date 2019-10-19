@@ -12,7 +12,7 @@ public class MutationUtility {
     private MutationUtility() {}
 
     /**
-     * 遗传算子【变异】
+     * 遗传算子[变异]
      * 单点变异
      */
     public static void performMutation() {

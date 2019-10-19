@@ -11,6 +11,9 @@ import com.carterwang.Repo.PopulationRepo;
 public class TranspositionUtility {
     private TranspositionUtility() {}
 
+    /**
+     * 遗传算子[转座]
+     */
     public static void performTransposition() {
         Population population = PopulationRepo.getPopulation();
         for(Individual ind : population.getAllIndividuals()) {
@@ -26,6 +29,10 @@ public class TranspositionUtility {
         }
     }
 
+    /**
+     * 插入元素序列的转座
+     * @param ind 个体
+     */
     private static void performIS(Individual ind) {
         int length = RandomUtility.randomLengthOfIS();
         int src,dest;
@@ -47,10 +54,18 @@ public class TranspositionUtility {
         ind.setChromosome(chromosome.toString());
     }
 
+    /**
+     * 根转座
+     * @param ind 个体
+     */
     private static void performRIS(Individual ind) {
 
     }
 
+    /**
+     * 基因转座
+     * @param ind 个体
+     */
     private static void performGene(Individual ind) {
 
     }

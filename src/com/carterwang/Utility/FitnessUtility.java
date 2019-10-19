@@ -33,9 +33,7 @@ public class FitnessUtility {
     }
 
     /**
-     * 对单个个体进行适应度计算，步骤如下
-     * 1.对层次遍历的表达式进行建树，转化为中缀表达式
-     * 2.将中缀表达式传入Calculator中进行计算
+     * 计算适应度
      */
     public static void calculateFitness() {
         //generateInfixString();
@@ -83,6 +81,7 @@ public class FitnessUtility {
                 T = 0;
                 for (int i=0;i<Params.NumberOfGenes;i++) {
                     beginIndex = i * Params.GeneLength;
+                    //用GRCM算法计算,不同基因间用+连接
                     T += GRCM.compute(in.getChromosome().substring(beginIndex, beginIndex + Params.GeneLength), row);
                 }
                 fitness = fitness + (Params.SelectionRange - Math.abs(row.getValue() - T));

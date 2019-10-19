@@ -104,7 +104,6 @@ public class EvolutionController {
         System.out.println("最优个体:");
         System.out.printf("%s",best.toString());
         System.out.println("代数: " + generation);
-        System.out.println("染色体结构: " + best.getChromosome());
         StringBuffer buffer = new StringBuffer();
         for(int i=0;i<best.getGenesInfixString().size();i++) {
             buffer.append('(');

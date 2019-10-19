@@ -39,6 +39,10 @@ public class RandomUtility {
         return (int)(Math.random() * Params.ChromosomeLength);
     }
 
+    /**
+     *
+     * @return 随机抽取第n个基因 0 <= n < Params.NumberOfGenes
+     */
     public static int indexOfGenes() {
         return (int)(Math.random() * Params.NumberOfGenes);
     }
