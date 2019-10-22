@@ -7,6 +7,8 @@ import com.carterwang.Population.Individual;
 import com.carterwang.Population.PopulationGenerator;
 import com.carterwang.Repo.PopulationRepo;
 
+import java.util.Date;
+
 public class EvolutionController {
 
     private int generation = 0;
@@ -43,6 +45,8 @@ public class EvolutionController {
             }
         }
 
+        //计时
+        Date begin = new Date();
         //开始进化
         while(true) {
             //计算适应度
@@ -83,6 +87,9 @@ public class EvolutionController {
 
             generation++;
         }
+        //统计时间
+        Date end = new Date();
+        System.out.println("TimeInterval: " + (end.getTime() - begin.getTime()) * 1.0 / 1000 / 60);
         //打印最佳个体
         showResult();
     }
@@ -95,24 +102,26 @@ public class EvolutionController {
 
     private void printBest() {
         Individual best = SelectionUtility.selectBestIndividual();
-        System.out.printf("Generation [%d]\n%s [%f]\n",generation,best.getChromosome(),best.getFitness());
+        System.out.printf("Generation [%d]\n",generation);
+        System.out.println(best);
     }
 
     private void showResult() {
         Individual best = SelectionUtility.selectBestIndividual();
+        //best = BiTree.disposeBest(best);
         System.out.println();
         System.out.println("最优个体:");
         System.out.printf("%s",best.toString());
         System.out.println("代数: " + generation);
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         for(int i=0;i<best.getGenesInfixString().size();i++) {
-            buffer.append('(');
-            buffer.append(best.getGenesInfixString().get(i));
-            buffer.append(')');
+            builder.append('(');
+            builder.append(best.getGenesInfixString().get(i));
+            builder.append(')');
             if(i < best.getGenesInfixString().size() - 1)
-                buffer.append('+');
+                builder.append('+');
         }
-        System.out.println("中缀表达式: " + buffer.toString());
+        System.out.println("中缀表达式: " + builder.toString());
     }
 
 }

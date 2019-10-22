@@ -32,7 +32,7 @@ public class Params {
     public static char[] T;
 
     //进化代数
-    public static int NumberOfGenerations = 5000;
+    public static int NumberOfGenerations = 50;
 
     //种群大小
     public static int PopulationSize = 100;
@@ -56,22 +56,22 @@ public class Params {
     public static int ChromosomeLength = NumberOfGenes * GeneLength;
 
     //变异率
-    public static double MutationRate = 0.1;
+    public static double MutationRate = 0.0385;
 
     //单点重组概率
-    public static double Onepoint_Recombination_Rate = 0.4;
+    public static double Onepoint_Recombination_Rate = 0.3;
 
     //两点重组概率
-    public static double Towpoint_Recombination_Rate = 0.2;
+    public static double Towpoint_Recombination_Rate = 0.3;
 
     //基因重组概率
     public static double Gene_Recombination_Rate = 0.1;
 
     //插入序列元素转座的概率
-    public static double IS_Transposition_Rate = 0.2;
+    public static double IS_Transposition_Rate = 0.1;
 
     //根转座的概率
-    public static double RIS_Transposition_Rate = 0.2;
+    public static double RIS_Transposition_Rate = 0.1;
 
     //基因转座概率
     public static double Gene_Transposition_Rate = 0.1;

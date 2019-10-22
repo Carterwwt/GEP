@@ -27,6 +27,7 @@ public class GRCM {
                 str[i] = str[i].replaceAll("" + c, String.valueOf(row.getTerminal()[c - 'a']));
             }
         }
+        //从有效长度内的尾部开始向前计算
         while(f != 0) {
             if(SelectionUtility.isTerminal(str[p])) {
                 p--;
@@ -43,22 +44,30 @@ public class GRCM {
     }
 
     /**
-     * 递归算出基因有效长度
      * @param gene 基因结构
      * @return 基因有效长度
      */
     private static int validLength(String gene) {
-        int l = 0, r = 0;
+        int l = 0, r = 0, t;
         while(r < gene.length()) {
             if(l == r && SelectionUtility.isTerminal(gene.charAt(l)))
                 break;
-            if(!SelectionUtility.isTerminal(gene.charAt(l)))
-                r += 2;
+            if(!SelectionUtility.isTerminal(gene.charAt(l))) {
+                t = Params.map.get(gene.charAt(l));
+                r += t;
+            }
             l++;
         }
         return l + 1;
     }
 
+    /**
+     * 计算结果
+     * @param sour 操作符左端的操作数
+     * @param dest 操作符右端的操作数
+     * @param op 操作符
+     * @return 用String返回小数结果
+     */
     private static String getResult(String sour, String dest, String op) {
         BigDecimal l = new BigDecimal(sour);
         BigDecimal r = new BigDecimal(dest);

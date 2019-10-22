@@ -1,5 +1,7 @@
 package com.carterwang.Population;
 
+import com.carterwang.Data.Params;
+
 import java.util.ArrayList;
 
 /**
@@ -63,10 +65,12 @@ public class Individual {
 
 @Override
 public String toString() {
-        String output = "";
-        for(String str : genesInfixString) {
-        output += String.format("Sub-ET%d %-16s",genesInfixString.indexOf(str), str);
+        StringBuilder str = new StringBuilder();
+        for(int i=0;i<chromosome.length();i++) {
+            if(i % Params.GeneLength == 0)
+                str.append(' ');
+            str.append(chromosome.charAt(i));
         }
-        return String.format("%s [%2d] [%9.4f] %s\n", chromosome,index,fitness,output);
+        return String.format("%s [%2d] [%9.4f]\n", str.toString(),index,fitness);
     }
 }
