@@ -1,6 +1,6 @@
 package com.carterwang;
 
-import com.carterwang.Client.MainApplication;
+import com.carterwang.JavafxApplication.MainApplication;
 
 public class Main {
 

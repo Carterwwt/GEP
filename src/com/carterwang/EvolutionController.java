@@ -12,11 +12,22 @@ import com.carterwang.Population.PopulationGenerator;
 import com.carterwang.Repo.PopulationRepo;
 
 
-import java.util.Date;
-
 public class EvolutionController {
 
     private int generation = 0;
+    private boolean turnOnMutation = true;
+    private boolean turnOnRecombination = true;
+    private boolean turnOnTransposition = true;
+    private boolean onlyShowBest = true;
+    private boolean shouldEnd = false;
+
+    public boolean isShouldEnd() {
+        return shouldEnd;
+    }
+
+    public int getGeneration() {
+        return generation;
+    }
 
     public EvolutionController() {
         //读入数据
@@ -26,17 +37,10 @@ public class EvolutionController {
         //打印初始种群信息，准备开始进化
         System.out.println(PopulationRepo.getPopulation());
         System.out.println("First Generation created!");
+        showReady();
     }
 
-    /**
-     * 启动种群进化
-     */
-    public void start() {
-        boolean turnOnMutation = true;
-        boolean turnOnRecombination = true;
-        boolean turnOnTransposition = true;
-        boolean onlyShowBest = true;
-
+    private void showReady() {
         //准备开始进化
         for(int i=0;i<10;i++)
             System.out.println();
@@ -49,54 +53,53 @@ public class EvolutionController {
                 e.printStackTrace();
             }
         }
+    }
 
-        //计时
-        Date begin = new Date();
-        //开始进化
-        while(true) {
-            //计算适应度
-            FitnessUtility.calculateFitness();
+    /**
+     * 启动种群进化
+     */
+    public void evolution() {
+        //计算适应度
+        FitnessUtility.calculateFitness();
 
-            //打印种群信息
-            if(onlyShowBest) {
-                printBest();
-            } else {
-                printPopulation();
-            }
-
-            //判断是否产生最优个体
-            if(FitnessUtility.reachMaximum())
-                break;
-
-            //判断是否到达进化代数上限
-            if(generation + 1 == Params.GENERATIONS)
-                break;
-
-            //遗传选择
-            SelectionUtility.performSelection();
-
-            //遗传变异
-            if(turnOnMutation) {
-                MutationUtility.performMutation();
-            }
-
-            //遗传重组
-            if(turnOnRecombination) {
-                RecombinationUtility.performRecombination();
-            }
-
-            //遗传转座
-            if(turnOnTransposition) {
-                TranspositionUtility.performTransposition();
-            }
-
-            generation++;
+        //打印种群信息
+        if(onlyShowBest) {
+            printBest();
+        } else {
+            printPopulation();
         }
-        //统计时间
-        Date end = new Date();
-        System.out.println("TimeInterval: " + (end.getTime() - begin.getTime()) * 1.0 / 1000 / 60);
-        //打印最佳个体
-        showResult();
+
+        //判断是否产生最优个体
+        if(FitnessUtility.reachMaximum()) {
+            shouldEnd = true;
+            return;
+        }
+
+        //判断是否到达进化代数上限
+        if(generation + 1 == Params.GENERATIONS) {
+            shouldEnd = true;
+            return;
+        }
+
+        //遗传选择
+        SelectionUtility.performSelection();
+
+        //遗传变异
+        if(turnOnMutation) {
+            MutationUtility.performMutation();
+        }
+
+        //遗传重组
+        if(turnOnRecombination) {
+            RecombinationUtility.performRecombination();
+        }
+
+        //遗传转座
+        if(turnOnTransposition) {
+            TranspositionUtility.performTransposition();
+        }
+
+        generation++;
     }
 
 
@@ -111,7 +114,7 @@ public class EvolutionController {
         System.out.println(best);
     }
 
-    private void showResult() {
+    public void showResult() {
         Individual best = SelectionUtility.selectBestIndividual();
         //best = BiTree.disposeBest(best);
         System.out.println();
