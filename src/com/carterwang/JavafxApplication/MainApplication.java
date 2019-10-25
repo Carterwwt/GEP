@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -91,9 +92,9 @@ public class MainApplication extends Application {
 
     private Label[] labels;
     private TextField[] textFields;
-    private Label chromosomeLabel;
-    private Label fitnessLabel;
-    private Label generationLabel;
+    private TextField chromosomeField;
+    private TextField fitnessField;
+    private TextField generationField;
     private HBox root;
     private GridPane leftRoot;
     private VBox rightRoot;
@@ -125,7 +126,7 @@ public class MainApplication extends Application {
             //将所有面板加入根面板中
             root.getChildren().add(leftRoot);
             root.getChildren().add(rightRoot);
-            root.getChildren().add(resultPane);
+            rightRoot.getChildren().add(resultPane);
 
             //显示scene
             Scene scene = new Scene(root, width, height);
@@ -150,7 +151,7 @@ public class MainApplication extends Application {
      */
     private void setupLeft() {
         leftRoot = new GridPane();
-        leftRoot.setPrefSize(width * 1 / 4, height);
+        leftRoot.setPrefSize(width * 2 / 5, height);
         leftRoot.setPadding(new Insets(10,20,20,20));
         leftRoot.setHgap(20);
         leftRoot.setVgap(10);
@@ -189,30 +190,48 @@ public class MainApplication extends Application {
     private void setupRight() {
         rightRoot = new VBox();
         rightRoot.setAlignment(Pos.TOP_CENTER);
-        rightRoot.setPadding(new Insets(10,20,20,20));
+        rightRoot.setPadding(new Insets(10,50,20,20));
         rightRoot.setSpacing(10);
-        rightRoot.setPrefSize(width * 3 / 4, height);
+        rightRoot.setPrefWidth(width * 3 / 5);
 
         Label title = new Label("Best Individual");
         title.setFont(new Font(18));
         rightRoot.getChildren().add(title);
 
-        chromosomeLabel = new Label();
-        chromosomeLabel.setFont(new Font(15));
-        rightRoot.getChildren().add(chromosomeLabel);
-
-        fitnessLabel = new Label();
-        fitnessLabel.setFont(new Font(15));
-        rightRoot.getChildren().add(fitnessLabel);
-
-        generationLabel = new Label();
-        generationLabel.setFont(new Font(15));
-        rightRoot.getChildren().add(generationLabel);
     }
 
+    /**
+     * 顾名思义
+     */
     private void setupResultPane() {
         resultPane = new GridPane();
+        resultPane.setVgap(15);
+        resultPane.setHgap(10);
 
+        Label label1 = new Label("染色体结构");
+        Label label2 = new Label("适应度");
+        Label label3 = new Label("代数");
+        label1.setFont(new Font(15));
+        label2.setFont(new Font(15));
+        label3.setFont(new Font(15));
+        resultPane.add(label1, 0, 0);
+        resultPane.add(label2, 0, 1);
+        resultPane.add(label3, 0, 2);
+
+        chromosomeField = new TextField();
+        chromosomeField.setFont(new Font(15));
+        resultPane.add(chromosomeField, 1, 0);
+        GridPane.setHgrow(chromosomeField, Priority.ALWAYS);
+
+        fitnessField = new TextField();
+        fitnessField.setFont(new Font(15));
+        resultPane.add(fitnessField, 1, 1);
+        GridPane.setHgrow(fitnessField, Priority.ALWAYS);
+
+        generationField = new TextField();
+        generationField.setFont(new Font(15));
+        resultPane.add(generationField, 1, 2);
+        GridPane.setHgrow(generationField, Priority.ALWAYS);
     }
 
     /**
@@ -256,11 +275,14 @@ public class MainApplication extends Application {
             evolutionTask.cancel();
     }
 
-    public void setResult() {
+    void setResult() {
         Individual best = SelectionUtility.selectBestIndividual();
-        chromosomeLabel.setText(best.getChromosome());
-        fitnessLabel.setText(String.valueOf(best.getFitness()));
-        generationLabel.setText(String.valueOf(evolutionTask.controller.getGeneration()));
+        chromosomeField.setText(best.getChromosome());
+        fitnessField.setText(String.valueOf(best.getFitness()));
+        generationField.setText(String.valueOf(evolutionTask.controller.getGeneration()));
     }
 
+    void setGeneration(int generation) {
+        generationField.setText(String.valueOf(generation));
+    }
 }

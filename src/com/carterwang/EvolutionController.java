@@ -37,7 +37,7 @@ public class EvolutionController {
         //打印初始种群信息，准备开始进化
         System.out.println(PopulationRepo.getPopulation());
         System.out.println("First Generation created!");
-        showReady();
+        //showReady();
     }
 
     private void showReady() {

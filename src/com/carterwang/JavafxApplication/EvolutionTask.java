@@ -17,6 +17,7 @@ public class EvolutionTask extends Task<Void> {
     protected Void call() {
         while(true) {
             controller.evolution();
+            application.setGeneration(controller.getGeneration());
             if(isCancelled() || controller.isShouldEnd()) {
                 updateMessage("进化终止!");
                 break;
@@ -40,6 +41,7 @@ public class EvolutionTask extends Task<Void> {
     @Override
     protected void cancelled() {
         updateMessage("Cancelled!");
+        application.setResult();
     }
 
     @Override
