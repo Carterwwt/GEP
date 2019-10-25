@@ -29,7 +29,7 @@ public class BiTree {
     public static Individual disposeBest(Individual best) {
         ArrayList<BiTree> trees = generateBiTree(best.getChromosome());
         ArrayList<String> infix = new ArrayList<>();
-        for(int i = 0;i < Params.NumberOfGenes;i++) {
+        for(int i = 0; i < Params.GENE_NUM; i++) {
             assert trees != null;
             infix.add(BiTree.traversal(trees.get(i), 1));
         }
@@ -46,15 +46,15 @@ public class BiTree {
             return null;
         int startIndex = 0;
         ArrayList<BiTree> trees = new ArrayList<>();
-        for(int i = 0; i< Params.NumberOfGenes; i++) {
-            String sub = str.substring(startIndex,startIndex + Params.GeneLength);
+        for(int i = 0; i< Params.GENE_NUM; i++) {
+            String sub = str.substring(startIndex,startIndex + Params.GENE_LENGTH);
             int t;
             if(SelectionUtility.isTerminal(sub.charAt(0)))
                 t = 0;
             else
                 t = 1;
             BiTree root = generateBiTree(sub, 0, t, true);
-            startIndex += Params.GeneLength;
+            startIndex += Params.GENE_LENGTH;
             trees.add(root);
         }
         return trees;

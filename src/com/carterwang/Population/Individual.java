@@ -67,7 +67,7 @@ public class Individual {
 public String toString() {
         StringBuilder str = new StringBuilder();
         for(int i=0;i<chromosome.length();i++) {
-            if(i % Params.GeneLength == 0)
+            if(i % Params.GENE_LENGTH == 0)
                 str.append(' ');
             str.append(chromosome.charAt(i));
         }

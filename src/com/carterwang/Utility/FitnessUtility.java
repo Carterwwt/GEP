@@ -8,9 +8,6 @@ import com.carterwang.Population.Individual;
 import com.carterwang.Population.Population;
 import com.carterwang.Repo.PopulationRepo;
 import com.carterwang.Repo.SampleDataRepo;
-import com.carterwang.Calculator.Polish;
-
-import java.util.ArrayList;
 
 /**
  * 计算适应度的工具类，由它来组织调度二叉树结构处理与逆波兰表达式计算
@@ -26,7 +23,7 @@ public class FitnessUtility {
     public static boolean reachMaximum() {
         boolean hasMaximum = false;
         for(Individual i : PopulationRepo.getPopulation().getAllIndividuals()) {
-            if(Math.abs(i.getFitness() - Params.NumberOfCases * Params.SelectionRange) <= Params.Precision)
+            if(Math.abs(i.getFitness() - Params.NumberOfCases * Params.SELECTION_RANGE) <= Params.PRECISION)
                 hasMaximum = true;
         }
         return hasMaximum;
@@ -55,12 +52,12 @@ public class FitnessUtility {
             fitness = 0;
             for(DataRow row : data.getDataRows()) {
                 T = 0;
-                for (int i=0;i<Params.NumberOfGenes;i++) {
-                    beginIndex = i * Params.GeneLength;
+                for (int i = 0; i<Params.GENE_NUM; i++) {
+                    beginIndex = i * Params.GENE_LENGTH;
                     //用GRCM算法计算,不同基因间用+连接
-                    T += GRCM.compute(in.getChromosome().substring(beginIndex, beginIndex + Params.GeneLength), row);
+                    T += GRCM.compute(in.getChromosome().substring(beginIndex, beginIndex + Params.GENE_LENGTH), row);
                 }
-                fitness = fitness + (Params.SelectionRange - Math.abs(row.getValue() - T));
+                fitness = fitness + (Params.SELECTION_RANGE - Math.abs(row.getValue() - T));
             }
             if(fitness > 0)
                 in.setFitness(fitness);

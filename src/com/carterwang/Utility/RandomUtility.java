@@ -44,7 +44,7 @@ public class RandomUtility {
      * @return 随机抽取第n个基因 0 <= n < Params.NumberOfGenes
      */
     public static int indexOfGenes() {
-        return (int)(Math.random() * Params.NumberOfGenes);
+        return (int)(Math.random() * Params.GENE_NUM);
     }
 
     /**
@@ -60,7 +60,7 @@ public class RandomUtility {
      * @return 随机生成的IS元素长度
      */
     public static int randomLengthOfIS() {
-        return (int)(Math.random() * (Params.IS_Elements_Length) + 1);
+        return (int)(Math.random() * (Params.IS_LENGTH) + 1);
     }
 
     /**
@@ -68,7 +68,7 @@ public class RandomUtility {
      * @return 随机生成的RIS元素长度
      */
     public static int randomLengthOfRIS() {
-        return (int)(Math.random() * (Params.RIS_Elements_Length) + 1);
+        return (int)(Math.random() * (Params.RIS_LENGTH) + 1);
     }
 
     /**
@@ -77,7 +77,7 @@ public class RandomUtility {
      * @return 返回是否是处在头部基因
      */
     public static boolean isHeadGene(int index) {
-        return (index % Params.GeneLength) < Params.HeadLength;
+        return (index % Params.GENE_LENGTH) < Params.HEAD_LENGTH;
     }
 
     /**
@@ -85,6 +85,6 @@ public class RandomUtility {
      * @param index 元素下标
      * @return 返回是否处在基因的第一位，主要用于避免根转座
      */
-    public static boolean isFirstInGene(int index) { return (index % Params.GeneLength) == 0;}
+    public static boolean isFirstInGene(int index) { return (index % Params.GENE_LENGTH) == 0;}
 
 }

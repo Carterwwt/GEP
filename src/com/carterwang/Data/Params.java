@@ -9,10 +9,10 @@ public class Params {
     public static String src = "src/data2.txt";
 
     //选择范围
-    public static double SelectionRange = 1000;
+    public static double SELECTION_RANGE = 1000;
 
     //精度
-    public static double Precision = 0;
+    public static double PRECISION = 0;
 
     //函数集
     public static char[] F = {'+','-','*','/'};
@@ -26,13 +26,13 @@ public class Params {
     }};
 
     //终点集参数个数
-    public static int T_Size = 0;
+    public static int T_SIZE = 0;
 
     //终点集
     public static char[] T;
 
     //进化代数
-    public static int NumberOfGenerations = 50;
+    public static int GENERATIONS = 50;
 
     //种群大小
     public static int PopulationSize = 100;
@@ -41,51 +41,51 @@ public class Params {
     public static int NumberOfCases = 0;
 
     //基因头部长度
-    public static int HeadLength = 6;
+    public static int HEAD_LENGTH = 6;
 
     //基因尾部长度
-    public static int TailLength = HeadLength * (map.get('+') - 1) + 1;
+    public static int TAIL_LENGTH = HEAD_LENGTH * (map.get('+') - 1) + 1;
 
     //基因长度
-    public static int GeneLength = HeadLength + TailLength;
+    public static int GENE_LENGTH = HEAD_LENGTH + TAIL_LENGTH;
 
     //每条染色体的基因数量
-    public static int NumberOfGenes = 4;
+    public static int GENE_NUM = 4;
 
     //染色体长度
-    public static int ChromosomeLength = NumberOfGenes * GeneLength;
+    public static int ChromosomeLength = GENE_NUM * GENE_LENGTH;
 
     //变异率
-    public static double MutationRate = 0.0385;
+    public static double MUTATION_RATE = 0.0385;
 
     //单点重组概率
-    public static double Onepoint_Recombination_Rate = 0.3;
+    public static double ONE_RECOM_RATE = 0.3;
 
     //两点重组概率
-    public static double Towpoint_Recombination_Rate = 0.3;
+    public static double TWO_RECOM_RATE = 0.3;
 
     //基因重组概率
-    public static double Gene_Recombination_Rate = 0.1;
+    public static double GENE_RECOM_RATE = 0.1;
 
     //插入序列元素转座的概率
-    public static double IS_Transposition_Rate = 0.1;
+    public static double IS_RATE = 0.1;
 
     //根转座的概率
-    public static double RIS_Transposition_Rate = 0.1;
+    public static double RIS_RATE = 0.1;
 
     //基因转座概率
-    public static double Gene_Transposition_Rate = 0.1;
+    public static double GENE_TRANS_RATE = 0.1;
 
     //插入序列元素的长度
-    public static int IS_Elements_Length = 3;
+    public static int IS_LENGTH = 3;
 
     //根转座元素的长度
-    public static int RIS_Elements_Length = 3;
+    public static int RIS_LENGTH = 3;
 
     public static char[] getT() {
         char[] T_All = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-        char[] c = new char[T_Size];
-        for(int i=0;i<T_Size;i++) {
+        char[] c = new char[T_SIZE];
+        for(int i = 0; i< T_SIZE; i++) {
             c[i] = T_All[i];
         }
         return c;

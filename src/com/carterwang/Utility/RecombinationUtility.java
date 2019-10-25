@@ -21,13 +21,13 @@ public class RecombinationUtility {
     public static void performRecombination() {
         Population population = PopulationRepo.getPopulation();
         for(Individual ind : population.getAllIndividuals()) {
-            if(Math.random() <= Params.Onepoint_Recombination_Rate) {
+            if(Math.random() <= Params.ONE_RECOM_RATE) {
                 performOnePoint(ind);
             }
-            if(Math.random() <= Params.Towpoint_Recombination_Rate) {
+            if(Math.random() <= Params.TWO_RECOM_RATE) {
                 performTowPoint(ind);
             }
-            if(Math.random() <= Params.Gene_Recombination_Rate) {
+            if(Math.random() <= Params.GENE_RECOM_RATE) {
                 performGene(ind);
             }
         }
@@ -71,8 +71,8 @@ public class RecombinationUtility {
         Individual ind1 = ind;
         Individual ind2 = RandomUtility.randomIndividual();
         int gene = RandomUtility.indexOfGenes();
-        int geneStart = gene * Params.GeneLength;
-        int geneEnd = geneStart + Params.GeneLength;
+        int geneStart = gene * Params.GENE_LENGTH;
+        int geneEnd = geneStart + Params.GENE_LENGTH;
         StringBuilder buffer1 = new StringBuilder(ind1.getChromosome());
         StringBuilder buffer2 = new StringBuilder(ind2.getChromosome());
         String gene1 = buffer1.substring(geneStart,geneEnd);

@@ -24,10 +24,10 @@ public class PopulationGenerator {
     private int populationSize;
 
     public PopulationGenerator() {
-        this.headLength = Params.HeadLength;
-        this.numberOfGenes = Params.NumberOfGenes;
+        this.headLength = Params.HEAD_LENGTH;
+        this.numberOfGenes = Params.GENE_NUM;
         this.populationSize = Params.PopulationSize;
-        this.tailLength = Params.TailLength;
+        this.tailLength = Params.TAIL_LENGTH;
     }
 
 

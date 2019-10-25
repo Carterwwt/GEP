@@ -1,11 +1,16 @@
 package com.carterwang;
 
 import com.carterwang.Data.Params;
-import com.carterwang.Utility.*;
 import com.carterwang.Utility.FileUtility;
+import com.carterwang.Utility.FitnessUtility;
+import com.carterwang.Utility.MutationUtility;
+import com.carterwang.Utility.RecombinationUtility;
+import com.carterwang.Utility.SelectionUtility;
+import com.carterwang.Utility.TranspositionUtility;
 import com.carterwang.Population.Individual;
 import com.carterwang.Population.PopulationGenerator;
 import com.carterwang.Repo.PopulationRepo;
+
 
 import java.util.Date;
 
@@ -64,7 +69,7 @@ public class EvolutionController {
                 break;
 
             //判断是否到达进化代数上限
-            if(generation + 1 == Params.NumberOfGenerations)
+            if(generation + 1 == Params.GENERATIONS)
                 break;
 
             //遗传选择

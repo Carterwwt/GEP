@@ -17,13 +17,13 @@ public class TranspositionUtility {
     public static void performTransposition() {
         Population population = PopulationRepo.getPopulation();
         for(Individual ind : population.getAllIndividuals()) {
-            if(Math.random() <= Params.IS_Transposition_Rate) {
+            if(Math.random() <= Params.IS_RATE) {
                 performIS(ind);
             }
-            if(Math.random() <= Params.RIS_Transposition_Rate) {
+            if(Math.random() <= Params.RIS_RATE) {
                 performRIS(ind);
             }
-            if(Math.random() <= Params.Gene_Transposition_Rate) {
+            if(Math.random() <= Params.GENE_TRANS_RATE) {
                 performGene(ind);
             }
         }
@@ -44,13 +44,13 @@ public class TranspositionUtility {
         while(!RandomUtility.isHeadGene(dest) || RandomUtility.isFirstInGene(dest)) {
             dest = RandomUtility.indexOfChromosome();
         }
-        int startIndex = dest / Params.GeneLength * Params.GeneLength;
-        int endIndex = startIndex + Params.GeneLength;
+        int startIndex = dest / Params.GENE_LENGTH * Params.GENE_LENGTH;
+        int endIndex = startIndex + Params.GENE_LENGTH;
         String IS = ind.getChromosome().substring(src,src + length);
         StringBuilder str = new StringBuilder(ind.getChromosome().substring(startIndex, endIndex));
         str.insert(dest - startIndex,IS);
         StringBuilder chromosome = new StringBuilder(ind.getChromosome());
-        chromosome.replace(startIndex,startIndex + Params.HeadLength,str.substring(0,Params.HeadLength));
+        chromosome.replace(startIndex,startIndex + Params.HEAD_LENGTH,str.substring(0,Params.HEAD_LENGTH));
         ind.setChromosome(chromosome.toString());
     }
 

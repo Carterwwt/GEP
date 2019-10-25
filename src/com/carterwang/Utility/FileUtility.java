@@ -34,7 +34,7 @@ public class FileUtility {
             e.printStackTrace();
         }
         Params.NumberOfCases = dataRows.size();
-        Params.T_Size = dataRows.get(0).getTerminal().length;
+        Params.T_SIZE = dataRows.get(0).getTerminal().length;
         Params.T = Params.getT();
         SampleDataRepo.setSampleData(new SampleData(dataRows));
     }

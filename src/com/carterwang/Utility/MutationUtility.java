@@ -21,7 +21,7 @@ public class MutationUtility {
         int selected = 0;
         for(Individual i : population.getAllIndividuals()) {
             r = Math.random();
-            if(r <= Params.MutationRate) {
+            if(r <= Params.MUTATION_RATE) {
                 //System.out.println(i.getIndex());
                 StringBuilder str = new StringBuilder(i.getChromosome());
                 char c;
