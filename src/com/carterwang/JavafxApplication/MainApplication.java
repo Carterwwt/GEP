@@ -4,10 +4,18 @@ import com.carterwang.Data.Params;
 import com.carterwang.Population.Individual;
 import com.carterwang.Utility.SelectionUtility;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,6 +25,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MainApplication中的Label和TextField都是以数组的形式存在
@@ -99,6 +110,7 @@ public class MainApplication extends Application {
     private GridPane leftRoot;
     private VBox rightRoot;
     private GridPane resultPane;
+    private LineChart<Number, Number> lineChart;
 
     private double width = 1100;
     private double height = width * 10 / 16;
@@ -122,6 +134,7 @@ public class MainApplication extends Application {
             setupLeft();
             setupRight();
             setupResultPane();
+            setupLineChart();
 
             //将所有面板加入根面板中
             root.getChildren().add(leftRoot);
@@ -194,9 +207,9 @@ public class MainApplication extends Application {
         rightRoot.setSpacing(10);
         rightRoot.setPrefWidth(width * 3 / 5);
 
-        Label title = new Label("Best Individual");
-        title.setFont(new Font(18));
-        rightRoot.getChildren().add(title);
+//        Label title = new Label("Best Individual");
+//        title.setFont(new Font(18));
+//        rightRoot.getChildren().add(title);
 
     }
 
@@ -220,18 +233,52 @@ public class MainApplication extends Application {
 
         chromosomeField = new TextField();
         chromosomeField.setFont(new Font(15));
+        chromosomeField.setEditable(false);
         resultPane.add(chromosomeField, 1, 0);
         GridPane.setHgrow(chromosomeField, Priority.ALWAYS);
 
         fitnessField = new TextField();
         fitnessField.setFont(new Font(15));
+        fitnessField.setEditable(false);
         resultPane.add(fitnessField, 1, 1);
         GridPane.setHgrow(fitnessField, Priority.ALWAYS);
 
         generationField = new TextField();
         generationField.setFont(new Font(15));
+        generationField.setEditable(false);
         resultPane.add(generationField, 1, 2);
         GridPane.setHgrow(generationField, Priority.ALWAYS);
+    }
+
+    private XYChart.Series<Number, Number> fitnessSeries;
+    private XYChart.Series<Number, Number> bestFitSeries;
+
+    private void setupLineChart() {
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("适应度折线图");
+        lineChart.setAnimated(false);
+        lineChart.setCreateSymbols(false);
+        xAxis.setLabel("进化代数");
+        //平均适应度折线
+        fitnessSeries = new XYChart.Series<>();
+        fitnessSeries.setName("平均适应度");
+        lineChart.getData().add(fitnessSeries);
+        //最佳适应度折线
+        bestFitSeries = new XYChart.Series<>();
+        bestFitSeries.setName("最佳个体适应度");
+        lineChart.getData().add(bestFitSeries);
+        rightRoot.getChildren().add(lineChart);
+    }
+
+    private void refreshLineChart() {
+        List<XYChart.Data<Number, Number>> avgData = ChartData.getAvgData();
+        fitnessSeries.getData().clear();
+        fitnessSeries.getData().addAll(avgData);
+        List<XYChart.Data<Number, Number>> bestData = ChartData.getBestData();
+        bestFitSeries.getData().clear();
+        bestFitSeries.getData().addAll(bestData);
     }
 
     /**
@@ -243,7 +290,7 @@ public class MainApplication extends Application {
         Params.PRECISION = Double.parseDouble(textFields[LabelIndex.PRECISION].getText());
         //TODO: CONVERT TEXT TO FUNCTION
         Params.GENERATIONS = Integer.parseInt(textFields[LabelIndex.GENERATIONS].getText());
-        Params.PopulationSize = Integer.parseInt(textFields[LabelIndex.POPULATION_SIZE].getText());
+        Params.POPULATION_SIZE = Integer.parseInt(textFields[LabelIndex.POPULATION_SIZE].getText());
         Params.HEAD_LENGTH = Integer.parseInt(textFields[LabelIndex.HEAD_LENGTH].getText());
         Params.GENE_NUM = Integer.parseInt(textFields[LabelIndex.GENE_NUM].getText());
         Params.MUTATION_RATE = Double.parseDouble(textFields[LabelIndex.MUTATION_RATE].getText());
@@ -259,9 +306,12 @@ public class MainApplication extends Application {
 
         //多线程处理，进化耗时较长，避免阻塞UI线程
         evolutionTask = new EvolutionTask(this);
-        evolutionTask.messageProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
+        evolutionTask.progressProperty().addListener((observable, oldValue, newValue) -> {
+            refreshLineChart();
         });
+
+        //清空上一次的数据
+        ChartData.getFitAndGeneration().clear();
         Thread th = new Thread(evolutionTask);
         th.setDaemon(true);
         th.start();
@@ -280,6 +330,7 @@ public class MainApplication extends Application {
         chromosomeField.setText(best.getChromosome());
         fitnessField.setText(String.valueOf(best.getFitness()));
         generationField.setText(String.valueOf(evolutionTask.controller.getGeneration()));
+        refreshLineChart();
     }
 
     void setGeneration(int generation) {

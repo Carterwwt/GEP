@@ -35,10 +35,10 @@ public class Params {
     public static int GENERATIONS = 50;
 
     //种群大小
-    public static int PopulationSize = 100;
+    public static int POPULATION_SIZE = 100;
 
     //适应度样本数据大小
-    public static int NumberOfCases = 0;
+    public static int CASES_NUM = 0;
 
     //基因头部长度
     public static int HEAD_LENGTH = 6;
@@ -53,7 +53,7 @@ public class Params {
     public static int GENE_NUM = 4;
 
     //染色体长度
-    public static int ChromosomeLength = GENE_NUM * GENE_LENGTH;
+    public static int CHROMOSOME_LENGTH = GENE_NUM * GENE_LENGTH;
 
     //变异率
     public static double MUTATION_RATE = 0.0385;

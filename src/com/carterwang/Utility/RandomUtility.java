@@ -36,7 +36,7 @@ public class RandomUtility {
      * @return 随机抽取染色体中的一个参数，返回下标
      */
     public static int indexOfChromosome() {
-        return (int)(Math.random() * Params.ChromosomeLength);
+        return (int)(Math.random() * Params.CHROMOSOME_LENGTH);
     }
 
     /**
@@ -52,7 +52,7 @@ public class RandomUtility {
      * @return 随机抽取种群中的一个个体
      */
     public static Individual randomIndividual() {
-        return PopulationRepo.getPopulation().getAllIndividuals().get(RandomUtility.random(Params.PopulationSize));
+        return PopulationRepo.getPopulation().getAllIndividuals().get(RandomUtility.random(Params.POPULATION_SIZE));
     }
 
     /**

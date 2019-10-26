@@ -4,10 +4,16 @@ import com.carterwang.Calculator.GRCM;
 import com.carterwang.Data.DataRow;
 import com.carterwang.Data.Params;
 import com.carterwang.Data.SampleData;
+import com.carterwang.JavafxApplication.ChartData;
 import com.carterwang.Population.Individual;
 import com.carterwang.Population.Population;
 import com.carterwang.Repo.PopulationRepo;
 import com.carterwang.Repo.SampleDataRepo;
+import javafx.scene.chart.Chart;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 
 /**
  * 计算适应度的工具类，由它来组织调度二叉树结构处理与逆波兰表达式计算
@@ -23,7 +29,7 @@ public class FitnessUtility {
     public static boolean reachMaximum() {
         boolean hasMaximum = false;
         for(Individual i : PopulationRepo.getPopulation().getAllIndividuals()) {
-            if(Math.abs(i.getFitness() - Params.NumberOfCases * Params.SELECTION_RANGE) <= Params.PRECISION)
+            if(Math.abs(i.getFitness() - Params.CASES_NUM * Params.SELECTION_RANGE) <= Params.PRECISION)
                 hasMaximum = true;
         }
         return hasMaximum;
@@ -45,6 +51,7 @@ public class FitnessUtility {
         SampleData data = SampleDataRepo.getSampleData();
         double T;
         double fitness;
+        BigDecimal totalFit = new BigDecimal(0);
         int beginIndex;
         //重置最大适应度个体
         PopulationRepo.getBest().setFitness(0);
@@ -59,14 +66,20 @@ public class FitnessUtility {
                 }
                 fitness = fitness + (Params.SELECTION_RANGE - Math.abs(row.getValue() - T));
             }
-            if(fitness > 0)
+            if(fitness > 0) {
                 in.setFitness(fitness);
-            else
+                //累加适应度，为统计平均适应度做准备
+                totalFit = totalFit.add(new BigDecimal(fitness));
+            } else {
                 in.setFitness(0);
+            }
             //更新最大适应度个体
             if(fitness > PopulationRepo.getBest().getFitness()) {
                 PopulationRepo.setBest(in);
             }
         }
+        BigDecimal average = totalFit.divide(new BigDecimal(Params.POPULATION_SIZE));
+        ChartData.getFitAndGeneration().add(Double.parseDouble(average.toString()));
+        ChartData.getBestFit().add(PopulationRepo.getBest().getFitness());
     }
 }

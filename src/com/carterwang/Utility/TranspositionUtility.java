@@ -37,7 +37,7 @@ public class TranspositionUtility {
         int length = RandomUtility.randomLengthOfIS();
         int src,dest;
         src = RandomUtility.indexOfChromosome();
-        while(src + length > Params.ChromosomeLength) {
+        while(src + length > Params.CHROMOSOME_LENGTH) {
             src = RandomUtility.indexOfChromosome();
         }
         dest = RandomUtility.indexOfChromosome();

@@ -1,5 +1,6 @@
 package com.carterwang.JavafxApplication;
 
+import com.carterwang.Data.Params;
 import com.carterwang.EvolutionController;
 import javafx.concurrent.Task;
 
@@ -18,6 +19,9 @@ public class EvolutionTask extends Task<Void> {
         while(true) {
             controller.evolution();
             application.setGeneration(controller.getGeneration());
+            if(controller.getGeneration() % 5 == 0) {
+                updateProgress(controller.getGeneration(), Params.GENERATIONS);
+            }
             if(isCancelled() || controller.isShouldEnd()) {
                 updateMessage("进化终止!");
                 break;
@@ -29,7 +33,7 @@ public class EvolutionTask extends Task<Void> {
 
     @Override
     protected void running() {
-        updateMessage("running...");
+        super.running();
     }
 
     @Override

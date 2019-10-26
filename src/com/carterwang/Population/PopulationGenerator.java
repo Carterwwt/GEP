@@ -26,7 +26,7 @@ public class PopulationGenerator {
     public PopulationGenerator() {
         this.headLength = Params.HEAD_LENGTH;
         this.numberOfGenes = Params.GENE_NUM;
-        this.populationSize = Params.PopulationSize;
+        this.populationSize = Params.POPULATION_SIZE;
         this.tailLength = Params.TAIL_LENGTH;
     }
 
