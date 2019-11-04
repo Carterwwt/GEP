@@ -23,6 +23,7 @@ public class Params {
         put('-',2);
         put('*',2);
         put('/',2);
+        put('Q',1);
     }};
 
     //终点集参数个数

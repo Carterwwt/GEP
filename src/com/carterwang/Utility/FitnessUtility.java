@@ -79,7 +79,7 @@ public class FitnessUtility {
             }
         }
         BigDecimal average = totalFit.divide(new BigDecimal(Params.POPULATION_SIZE));
-        ChartData.getFitAndGeneration().add(Double.parseDouble(average.toString()));
-        ChartData.getBestFit().add(PopulationRepo.getBest().getFitness());
+        ChartData.addDataToFitAndGen(Double.parseDouble(average.toString()));
+        ChartData.addDataToBestFit(PopulationRepo.getBest().getFitness());
     }
 }

@@ -8,30 +8,22 @@ import java.util.List;
 
 public class ChartData {
 
-    private static List<Double> fitAndGeneration = new ArrayList<>();
-    private static List<Double> bestFit = new ArrayList<>();
+    private static List<XYChart.Data<Number, Number>> fitAndGenData = new ArrayList<>();
+    private static List<XYChart.Data<Number, Number>> bestFitData = new ArrayList<>();
 
-    public static List<Double> getFitAndGeneration() {
-        return fitAndGeneration;
+    public static void addDataToFitAndGen(double fitness) {
+        fitAndGenData.add(new XYChart.Data<>(fitAndGenData.size(), fitness));
     }
 
-    public static List<Double> getBestFit() {
-        return bestFit;
+    public static void addDataToBestFit(double fitness) {
+        bestFitData.add(new XYChart.Data<>(bestFitData.size(), fitness));
     }
 
     public static List<XYChart.Data<Number, Number>> getAvgData() {
-        List<XYChart.Data<Number, Number>> data = new ArrayList<>();
-        for(int i=0;i<fitAndGeneration.size();i++) {
-            data.add(new XYChart.Data<>(i, fitAndGeneration.get(i)));
-        }
-        return data;
+        return fitAndGenData;
     }
 
     public static List<XYChart.Data<Number, Number>> getBestData() {
-        List<XYChart.Data<Number, Number>> data = new ArrayList<>();
-        for(int i=0;i<bestFit.size();i++) {
-            data.add(new XYChart.Data<>(i, bestFit.get(i)));
-        }
-        return data;
+        return bestFitData;
     }
 }

@@ -50,26 +50,27 @@ public class PopulationGenerator {
      * @return 一个String，装有个体的染色体结构
      */
     private String generateIndividual() {
-        String res = "";
+        StringBuilder res = new StringBuilder();
         int index;
         for(int i=0;i<numberOfGenes;i++) {
-            res += Params.F[RandomUtility.indexOfFunction()];
+            int k = headLength / 2;
             //生成基因头部
-            for(int j=0;j<headLength - 1;j++) {
-                if(Math.random() < 0.5) {
-                    //选中函数集
-                    res += Params.F[RandomUtility.indexOfFunction()];
-                } else {
-                    //选中终点集
-                    res += Params.T[RandomUtility.indexOfTerminal()];
-                }
+            for(int j=0;j<k;j++) {
+                //选中函数集
+                res.append(Params.F[RandomUtility.indexOfFunction()]);
+            }
+            for(int j=0;j<headLength - k;j++) {
+                if(Math.random() < 0.5)
+                    res.append(Params.F[RandomUtility.indexOfFunction()]);
+                else
+                    res.append(Params.T[RandomUtility.indexOfTerminal()]);
             }
             //生成基因尾部
             for(int j=0;j<tailLength;j++) {
                 index = RandomUtility.indexOfTerminal();
-                res += Params.T[index];
+                res.append(Params.T[index]);
             }
         }
-        return res;
+        return res.toString();
     }
 }

@@ -4,11 +4,6 @@ import com.carterwang.Data.Params;
 import com.carterwang.Population.Individual;
 import com.carterwang.Utility.SelectionUtility;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,7 +21,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -272,15 +266,6 @@ public class MainApplication extends Application {
         rightRoot.getChildren().add(lineChart);
     }
 
-    private void refreshLineChart() {
-        List<XYChart.Data<Number, Number>> avgData = ChartData.getAvgData();
-        fitnessSeries.getData().clear();
-        fitnessSeries.getData().addAll(avgData);
-        List<XYChart.Data<Number, Number>> bestData = ChartData.getBestData();
-        bestFitSeries.getData().clear();
-        bestFitSeries.getData().addAll(bestData);
-    }
-
     /**
      * 开始按钮的响应事件
      */
@@ -311,7 +296,8 @@ public class MainApplication extends Application {
         });
 
         //清空上一次的数据
-        ChartData.getFitAndGeneration().clear();
+        ChartData.getAvgData().clear();
+        ChartData.getBestData().clear();
         Thread th = new Thread(evolutionTask);
         th.setDaemon(true);
         th.start();
@@ -335,5 +321,14 @@ public class MainApplication extends Application {
 
     void setGeneration(int generation) {
         generationField.setText(String.valueOf(generation));
+    }
+
+    private void refreshLineChart() {
+        List<XYChart.Data<Number, Number>> avgData = ChartData.getAvgData();
+        fitnessSeries.getData().clear();
+        fitnessSeries.getData().addAll(avgData);
+        List<XYChart.Data<Number, Number>> bestData = ChartData.getBestData();
+        bestFitSeries.getData().clear();
+        bestFitSeries.getData().addAll(bestData);
     }
 }

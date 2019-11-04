@@ -34,9 +34,13 @@ public class GRCM {
             } else {
                 if(Params.map.get(str[p].charAt(0)) == 2) {
                     //取两个数出来，计算结果放入gene[p]
-                    str[p] = getResult(str[f-1],str[f],str[p]);
+                    str[p] = getResult(str[f-1], str[f], str[p]);
                     p--;
                     f -= 2;
+                } else if(Params.map.get(str[p].charAt(0)) == 1) {
+                    str[p] = getResult(str[f],"0.0", str[p]);
+                    p--;
+                    f -= 1;
                 }
             }
         }
@@ -81,6 +85,8 @@ public class GRCM {
                     return l.multiply(r).toString();
                 case "/":
                     return l.divide(r, 8, RoundingMode.HALF_UP).toString();
+                case "Q":
+                    return String.valueOf(Math.sqrt(Double.parseDouble(sour)));
             }
         } catch (Exception e) {
             return "0.0";
