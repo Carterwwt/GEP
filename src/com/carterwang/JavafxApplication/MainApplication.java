@@ -2,6 +2,7 @@ package com.carterwang.JavafxApplication;
 
 import com.carterwang.Data.Params;
 import com.carterwang.Population.Individual;
+import com.carterwang.Utility.FileUtility;
 import com.carterwang.Utility.SelectionUtility;
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -95,7 +96,6 @@ class LabelIndex {
  */
 public class MainApplication extends Application {
 
-    private Label[] labels;
     private TextField[] textFields;
     private TextField chromosomeField;
     private TextField fitnessField;
@@ -104,10 +104,10 @@ public class MainApplication extends Application {
     private GridPane leftRoot;
     private VBox rightRoot;
     private GridPane resultPane;
-    private LineChart<Number, Number> lineChart;
+    private LineChart<Number, Number> genToFitChart;
 
     private double width = 1100;
-    private double height = width * 10 / 16;
+    private double height = width * 12 / 16;
 
     //进化进程
     private EvolutionTask evolutionTask;
@@ -123,12 +123,16 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            //读入数据
+            FileUtility.readData();
+
             //初始化面板
             setupRoot();
             setupLeft();
             setupRight();
             setupResultPane();
-            setupLineChart();
+            setupGenToFitChart();
+            setupTarToModChart();
 
             //将所有面板加入根面板中
             root.getChildren().add(leftRoot);
@@ -161,12 +165,12 @@ public class MainApplication extends Application {
         leftRoot.setPrefSize(width * 2 / 5, height);
         leftRoot.setPadding(new Insets(10,20,20,20));
         leftRoot.setHgap(20);
-        leftRoot.setVgap(10);
-        labels = new Label[LabelIndex.length];
+        leftRoot.setVgap(17);
+        Label[] labels = new Label[LabelIndex.length];
         textFields = new TextField[LabelIndex.length];
         for(int i=0;i<LabelIndex.length;i++) {
             labels[i] = new Label(LabelIndex.labelName[i]);
-            labels[i].setFont(new Font(15));
+            labels[i].setFont(new Font(16));
             textFields[i] = new TextField(LabelIndex.defaultValue[i]);
         }
         leftRoot.addColumn(0, labels);
@@ -174,7 +178,7 @@ public class MainApplication extends Application {
 
         //开始按钮
         Button startBtn = new Button("开始");
-        startBtn.setPrefSize(100,30);
+        startBtn.setPrefSize(120,30);
         startBtn.setOnAction(event -> {
             startEvolution();
         });
@@ -183,7 +187,7 @@ public class MainApplication extends Application {
 
         //停止按钮
         Button endBtn = new Button("停止");
-        endBtn.setPrefSize(100,30);
+        endBtn.setPrefSize(120,30);
         endBtn.setOnAction(event -> {
             endEvolution();
         });
@@ -200,11 +204,6 @@ public class MainApplication extends Application {
         rightRoot.setPadding(new Insets(10,50,20,20));
         rightRoot.setSpacing(10);
         rightRoot.setPrefWidth(width * 3 / 5);
-
-//        Label title = new Label("Best Individual");
-//        title.setFont(new Font(18));
-//        rightRoot.getChildren().add(title);
-
     }
 
     /**
@@ -244,25 +243,56 @@ public class MainApplication extends Application {
         GridPane.setHgrow(generationField, Priority.ALWAYS);
     }
 
+
     private XYChart.Series<Number, Number> fitnessSeries;
     private XYChart.Series<Number, Number> bestFitSeries;
 
-    private void setupLineChart() {
+    /**
+     * 初始化 代数——适应度 折线图
+     */
+    private void setupGenToFitChart() {
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-        lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("适应度折线图");
+        fitnessSeries = new XYChart.Series<>();
+        bestFitSeries = new XYChart.Series<>();
+        xAxis.setLabel("进化代数");
+        genToFitChart = new LineChart<>(xAxis, yAxis);
+        genToFitChart.setTitle("适应度折线图");
+        genToFitChart.setAnimated(false);
+        genToFitChart.setCreateSymbols(false);
+        //平均适应度折线
+        fitnessSeries.setName("平均适应度");
+        genToFitChart.getData().add(fitnessSeries);
+        //最佳适应度折线
+        bestFitSeries.setName("最佳个体适应度");
+        genToFitChart.getData().add(bestFitSeries);
+        rightRoot.getChildren().add(genToFitChart);
+    }
+
+    private XYChart.Series<Number, Number> targetSeries;
+    private XYChart.Series<Number, Number> modelSeries;
+
+    /**
+     * 初始化 目标——模型拟合度 散点图
+     */
+    private void setupTarToModChart() {
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        targetSeries = new XYChart.Series<>();
+        modelSeries = new XYChart.Series<>();
+        xAxis.setLabel("数据集");
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("拟合度曲线图");
         lineChart.setAnimated(false);
         lineChart.setCreateSymbols(false);
-        xAxis.setLabel("进化代数");
-        //平均适应度折线
-        fitnessSeries = new XYChart.Series<>();
-        fitnessSeries.setName("平均适应度");
-        lineChart.getData().add(fitnessSeries);
-        //最佳适应度折线
-        bestFitSeries = new XYChart.Series<>();
-        bestFitSeries.setName("最佳个体适应度");
-        lineChart.getData().add(bestFitSeries);
+
+        //目标序列
+        targetSeries.setName("目标");
+        targetSeries.getData().addAll(ChartData.getTargetData());
+        lineChart.getData().add(targetSeries);
+        //模型序列
+        modelSeries.setName("模型");
+        lineChart.getData().add(modelSeries);
         rightRoot.getChildren().add(lineChart);
     }
 
@@ -292,7 +322,7 @@ public class MainApplication extends Application {
         //多线程处理，进化耗时较长，避免阻塞UI线程
         evolutionTask = new EvolutionTask(this);
         evolutionTask.progressProperty().addListener((observable, oldValue, newValue) -> {
-            refreshLineChart();
+            updateChart();
         });
 
         //清空上一次的数据
@@ -311,19 +341,40 @@ public class MainApplication extends Application {
             evolutionTask.cancel();
     }
 
+    /**
+     * 当evolutionTask的cancelled或succeeded被触发，都会调用此函数显示结果
+     */
     void setResult() {
         Individual best = SelectionUtility.selectBestIndividual();
         chromosomeField.setText(best.getChromosome());
         fitnessField.setText(String.valueOf(best.getFitness()));
         generationField.setText(String.valueOf(evolutionTask.controller.getGeneration()));
-        refreshLineChart();
+        updateChart();
     }
 
-    void setGeneration(int generation) {
+    /**
+     * 更新代数显示
+     * @param generation 当前进化代数
+     */
+    void updateGeneration(int generation) {
         generationField.setText(String.valueOf(generation));
     }
 
-    private void refreshLineChart() {
+    private void updateChart() {
+        updateGenToFitChart();
+        updateTarToModChart();
+    }
+
+    private void updateTarToModChart() {
+        List<XYChart.Data<Number, Number>> data = ChartData.getModelData();
+        modelSeries.getData().clear();
+        modelSeries.getData().addAll(data);
+    }
+
+    /**
+     * 更新折线图
+     */
+    private void updateGenToFitChart() {
         List<XYChart.Data<Number, Number>> avgData = ChartData.getAvgData();
         fitnessSeries.getData().clear();
         fitnessSeries.getData().addAll(avgData);

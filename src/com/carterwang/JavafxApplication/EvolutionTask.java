@@ -18,7 +18,7 @@ public class EvolutionTask extends Task<Void> {
     protected Void call() {
         while(true) {
             controller.evolution();
-            application.setGeneration(controller.getGeneration());
+            application.updateGeneration(controller.getGeneration());
             if(controller.getGeneration() % 5 == 0) {
                 updateProgress(controller.getGeneration(), Params.GENERATIONS);
             }

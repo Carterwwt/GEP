@@ -1,7 +1,6 @@
 package com.carterwang;
 
 import com.carterwang.Data.Params;
-import com.carterwang.Utility.FileUtility;
 import com.carterwang.Utility.FitnessUtility;
 import com.carterwang.Utility.MutationUtility;
 import com.carterwang.Utility.RecombinationUtility;
@@ -30,8 +29,6 @@ public class EvolutionController {
     }
 
     public EvolutionController() {
-        //读入数据
-        FileUtility.readData();
         //随机产生初始种群
         new PopulationGenerator().generatePopulation();
         //打印初始种群信息，准备开始进化

@@ -53,7 +53,7 @@ public class PopulationGenerator {
         StringBuilder res = new StringBuilder();
         int index;
         for(int i=0;i<numberOfGenes;i++) {
-            int k = headLength / 2;
+            int k = headLength;
             //生成基因头部
             for(int j=0;j<k;j++) {
                 //选中函数集
